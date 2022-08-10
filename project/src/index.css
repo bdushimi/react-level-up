@@ -209,6 +209,7 @@ Menu
 }
 .price {
   color: var(--clr-gold);
+  margin-left: 1rem;
 }
 .item-text {
   margin-bottom: 0;

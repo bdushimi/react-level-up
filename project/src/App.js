@@ -1,35 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { FaAngleDoubleRight } from 'react-icons/fa'
 import items from './data';
-import Menu from './Menu';
-import Categories from './Categories';
 
-const allCategories = ['all', ...new Set(items.map((item) => item.category))];
+const url = 'https://course-api.com/react-tabs-project'
+
 
 function App() {
+  const [loading, setLoading] = useState(true);
+  const [jobs, setJobs] = useState([]);
 
-  const [menuItems, setMenuItems] = useState(items);
-  const [categories, setCategories] = useState(allCategories);
 
-
-  const filterItems = (category) => {
-    if (category === 'all') {
-      setMenuItems(items);
-      return;
-    }
-
-    const filteredItems = items.filter(item => item.category === category);
-    setMenuItems(filteredItems);
+  const fetchJobs = async () => {
+    const response = await fetch(url)
+    const _jobs = await response.json(response)
+    setJobs(_jobs)
+    setLoading(false)
   }
 
-  return <main>
-    <section class="menu section">
-      <div class="title">
-        <h2>Our Menu</h2>
-        <div class="underline"></div>
-      </div>
+  useEffect(() => {
+    fetchJobs();
+  }, [])
+
+  loading && (
+    <section class="section loading">
+      <h1>Loading....</h1>
     </section>
-    <Categories categories={categories} filterItems={filterItems} />
-    <Menu items={ menuItems} />
+  )
+  
+
+  return <main>
+    <h2>Resume</h2>
   </main>
 }
 

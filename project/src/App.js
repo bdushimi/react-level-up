@@ -29,8 +29,8 @@ function App() {
       </section>
     )
   }
-  
-const {company, dates, duties, title} = jobs[value]
+
+  const { company, dates, duties, title } = jobs[value]
   return <section className="section">
     <div class="title">
       <h2>Experience</h2>
@@ -39,6 +39,19 @@ const {company, dates, duties, title} = jobs[value]
 
     <div class="jobs-center">
       <article class="job-info">
+        <div class="btn-container">
+          {
+            jobs.map((job, index) => {
+              return (
+                <button
+                  key={job.id}
+                  className={`job-btn ${index === value && 'active-btn'}`}
+                  onClick={() => setValue(index)}
+                >{job.company}</button>
+              )
+            })
+          }
+        </div>
         <h3>{title}</h3>
         <h3>{company}</h3>
         <p class="job-date">{dates}</p>
@@ -47,7 +60,7 @@ const {company, dates, duties, title} = jobs[value]
             return (
               <div class="job-desc" key={index}>
                 <FaAngleDoubleRight className="job-icon"></FaAngleDoubleRight>
-                <p>{ duty }</p>
+                <p>{duty}</p>
               </div>
             )
           })

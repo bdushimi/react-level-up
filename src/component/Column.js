@@ -2,6 +2,8 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 
+import TaskAddButton from './TaskAddButton'
+
 export default function Column({ colId, index }) {
   const data = useSelector((state) => state.task);
 
@@ -33,9 +35,8 @@ export default function Column({ colId, index }) {
                   className="task-list"
                 >
                   <RenderColumnTasks />
-                  {provided.placeholder}
-
-                  {/* Add the TaskAddButton component here */}
+                  {provided.placeholder}  
+                  <TaskAddButton colId={colId}/>
                 </div>
               )}
             </Droppable>

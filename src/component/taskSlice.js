@@ -1,4 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { db } from "../firebase";
+import {
+  doc,
+  setDoc,
+  updateDoc,
+  deleteDoc,
+  arrayUnion,
+  arrayRemove,
+} from "firebase/firestore";
 
 const initialState = {
   tasks: {},
@@ -72,6 +81,24 @@ export const taskSlice = createSlice({
       let nextId = parseInt(lastId.split("-")[1]) + 1;
       let newTaskId = "task-" + nextId.toString();
 
+      try {
+        // Add a new task to the "tasks" collection
+        setDoc(doc(db, "tasks", newTaskId), {
+          id: newTaskId,
+          taskTitle: "New Task",
+          taskDescription: "",
+        });
+
+        const colDocRef = doc(db, 'columns', colId)
+          // Update the "columns" collection 
+          updateDoc(colDocRef, {
+          taskIds: arrayUnion(newTaskId)
+          })
+          
+      } catch (err) {
+        alert(err);
+      }
+
       // Add the new task in the tasks object of the initial state
       state.tasks[newTaskId] = {
         id: newTaskId,
@@ -83,17 +110,20 @@ export const taskSlice = createSlice({
       state.columns[colId].taskIds.push(newTaskId);
     },
     updateTask: (state, action) => {
-      const {id, taskTitle, taskDescription} = action.payload
+      const { id, taskTitle, taskDescription } = action.payload;
 
       const updatedTask = {
         id: id,
         taskTitle: taskTitle,
-        taskDescription: taskDescription
-      }
-      
+        taskDescription: taskDescription,
+      };
+
       // update the data base only if the task title or task description changes
-      if (state.tasks[id].taskTitle !== taskTitle || state.tasks[id].taskDescription !== taskDescription) {
-        state.tasks[id] = updatedTask
+      if (
+        state.tasks[id].taskTitle !== taskTitle ||
+        state.tasks[id].taskDescription !== taskDescription
+      ) {
+        state.tasks[id] = updatedTask;
       }
     },
     deleteTask: (state, action) => {
@@ -101,7 +131,9 @@ export const taskSlice = createSlice({
       const colId = state.currColIdToEdit;
 
       // update the redux state
-      state.columns[colId].taskIds = state.columns[colId].taskIds.filter(item => item !== taskId)
+      state.columns[colId].taskIds = state.columns[colId].taskIds.filter(
+        (item) => item !== taskId
+      );
       delete state.tasks[taskId];
     },
   },
@@ -119,7 +151,7 @@ export const {
   dragColumns,
   deleteTask,
   updateTask,
-  addNewTask
+  addNewTask,
 } = taskSlice.actions;
 
 export default taskSlice.reducer;

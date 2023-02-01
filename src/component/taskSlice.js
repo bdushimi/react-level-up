@@ -50,6 +50,11 @@ export const taskSlice = createSlice({
       state.columnOrder = action.payload.columnOrder;
     },
     dragColumns: (state, action) => {
+      const columnOrderDocRef = doc(db, "columnOrder", "col-order");
+      updateDoc(columnOrderDocRef, {
+        columnOrder: action.payload,
+      });
+
       state.columnOrder = action.payload;
     },
     dragTasksDifferentColumn: (state, action) => {
@@ -59,10 +64,20 @@ export const taskSlice = createSlice({
       state.columns[dstColId].taskIds = dstTaskIds;
     },
     dragTasksSameColumn: (state, action) => {
-      const colId = action.payload.id;
-      const taskIds = action.payload.taskIds;
+      let { srcColId, srcTaskIds, dstColId, dstTaskIds } = action.payload;
 
-      state.columns[colId].taskIds = taskIds;
+      const srcColDocRef = doc(db, "columns", srcColId);
+      updateDoc(srcColDocRef, {
+        taskIds: srcTaskIds,
+      });
+
+      const dstColDocRef = doc(db, "columns", dstColId);
+      updateDoc(dstColDocRef, {
+        taskIds: dstTaskIds,
+      });
+
+      state.columns[srcColId].taskIds = srcTaskIds;
+      state.columns[dstColId].taskIds = dstTaskIds;
     },
     addNewTask: (state, action) => {
       let colId = action.payload.colId;
@@ -89,12 +104,11 @@ export const taskSlice = createSlice({
           taskDescription: "",
         });
 
-        const colDocRef = doc(db, 'columns', colId)
-          // Update the "columns" collection 
-          updateDoc(colDocRef, {
-          taskIds: arrayUnion(newTaskId)
-          })
-          
+        const colDocRef = doc(db, "columns", colId);
+        // Update the "columns" collection
+        updateDoc(colDocRef, {
+          taskIds: arrayUnion(newTaskId),
+        });
       } catch (err) {
         alert(err);
       }

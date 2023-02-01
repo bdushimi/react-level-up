@@ -149,10 +149,19 @@ export const taskSlice = createSlice({
       const taskId = action.payload.taskId;
       const colId = state.currColIdToEdit;
 
+      // update the database
+      // -- delete the task from the "tasks" collection of the database
+      const taskDocRef = doc(db, 'tasks', taskId)
+      deleteDoc(taskDocRef)
+
+      // -- update the taskIds array in the "columns" collection of the database
+      const colDocRef = doc(db, 'columns', colId)
+      updateDoc(colDocRef, {
+        taskIds: arrayRemove(taskId)
+      })
+
       // update the redux state
-      state.columns[colId].taskIds = state.columns[colId].taskIds.filter(
-        (item) => item !== taskId
-      );
+      state.columns[colId].taskIds = state.columns[colId].taskIds.filter(item => item !== taskId)
       delete state.tasks[taskId];
     },
   },

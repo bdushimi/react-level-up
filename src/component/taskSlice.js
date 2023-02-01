@@ -137,8 +137,13 @@ export const taskSlice = createSlice({
         state.tasks[id].taskTitle !== taskTitle ||
         state.tasks[id].taskDescription !== taskDescription
       ) {
-        state.tasks[id] = updatedTask;
+        const taskDocRef = doc(db, "tasks", id);
+        updateDoc(taskDocRef, {
+          taskTitle: taskTitle,
+          taskDescription: taskDescription,
+        });
       }
+      state.tasks[id] = updatedTask;
     },
     deleteTask: (state, action) => {
       const taskId = action.payload.taskId;

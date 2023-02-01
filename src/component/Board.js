@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useDispatch, useSelector } from "react-redux";
+import { db } from "../firebase";
+import { collection, query, onSnapshot } from "firebase/firestore";
 
 // Import the dataset
 import dataset from "./dataset";
 import Column from "./Column";
-import EditTaskDialog from './EditTaskDialog'
-
+import EditTaskDialog from "./EditTaskDialog";
 
 import {
   setAllTasks,
@@ -86,9 +87,28 @@ export default function Board() {
 
   useEffect(
     () => {
-      dispatch(setAllTasks({ tasks: dataset["tasks"] }));
-      dispatch(setAllColumns({ columns: dataset["columns"] }));
-      dispatch(setColumnOrder({ columnOrder: dataset["columnOrder"] }));
+      const queryTasks = query(collection(db, "tasks"));
+      let tasks = [];
+      onSnapshot(queryTasks, (querySnapshot) => {
+        querySnapshot.docs.map((doc) => tasks.push(doc.data()));
+        dispatch(setAllTasks(tasks));
+      });
+
+      // Query Columns from the databse
+      const queryColumns = query(collection(db, "columns"));
+      let columns = [];
+      onSnapshot(queryColumns, (querySnapshot) => {
+        querySnapshot.docs.map((doc) => columns.push(doc.data()));
+        dispatch(setAllColumns(columns));
+      });
+
+      // Query COlumn Order from the databse
+      const queryColumnOrder = query(collection(db, "columnOrder"));
+      let columnOrder = [];
+      onSnapshot(queryColumnOrder, (querySnapshot) => {
+        querySnapshot.docs.map((doc) => (columnOrder = doc.data()));
+        dispatch(setColumnOrder(columnOrder));
+      });
     },
 
     // React guarantees that dispatch function identity is stable and won't change on re-renders.
@@ -115,7 +135,7 @@ export default function Board() {
             >
               {data.columnOrder.map((colId, index) => {
                 // Replace this with the Column component later
-                return <Column key={colId} colId={colId} index={index}/>;
+                return <Column key={colId} colId={colId} index={index} />;
               })}
               {provided.placeholder}
             </div>
@@ -124,11 +144,12 @@ export default function Board() {
       </DragDropContext>
 
       {/* Add the EditTaskDialog component here */}
-      {
-          data.isDialogOpen ?
-          <EditTaskDialog taskId={data.currTaskIdToEdit} open={data.isDialogOpen} /> :
-          null
-      }
+      {data.isDialogOpen ? (
+        <EditTaskDialog
+          taskId={data.currTaskIdToEdit}
+          open={data.isDialogOpen}
+        />
+      ) : null}
     </>
   );
 }

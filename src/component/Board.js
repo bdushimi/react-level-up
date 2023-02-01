@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 // Import the dataset
 import dataset from "./dataset";
 import Column from "./Column";
+import EditTaskDialog from './EditTaskDialog'
 
 
 import {
@@ -123,6 +124,11 @@ export default function Board() {
       </DragDropContext>
 
       {/* Add the EditTaskDialog component here */}
+      {
+          data.isDialogOpen ?
+          <EditTaskDialog taskId={data.currTaskIdToEdit} open={data.isDialogOpen} /> :
+          null
+      }
     </>
   );
 }

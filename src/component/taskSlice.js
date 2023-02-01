@@ -39,15 +39,21 @@ export const taskSlice = createSlice({
 
     // Add new reducers here
     setAllTasks: (state, action) => {
-      state.tasks = action.payload.tasks;
+      let finalTasks = {};
+      action.payload.map((task) => (finalTasks[task["id"]] = task));
+
+      state.tasks = finalTasks;
     },
 
     setAllColumns: (state, action) => {
-      state.columns = action.payload.columns;
+      let finalColumns = {};
+      action.payload.map((column) => (finalColumns[column["id"]] = column));
+
+      state.columns = finalColumns;
     },
 
     setColumnOrder: (state, action) => {
-      state.columnOrder = action.payload.columnOrder;
+      state.columnOrder = action.payload["columnOrder"];
     },
     dragColumns: (state, action) => {
       const columnOrderDocRef = doc(db, "columnOrder", "col-order");
@@ -151,17 +157,19 @@ export const taskSlice = createSlice({
 
       // update the database
       // -- delete the task from the "tasks" collection of the database
-      const taskDocRef = doc(db, 'tasks', taskId)
-      deleteDoc(taskDocRef)
+      const taskDocRef = doc(db, "tasks", taskId);
+      deleteDoc(taskDocRef);
 
       // -- update the taskIds array in the "columns" collection of the database
-      const colDocRef = doc(db, 'columns', colId)
+      const colDocRef = doc(db, "columns", colId);
       updateDoc(colDocRef, {
-        taskIds: arrayRemove(taskId)
-      })
+        taskIds: arrayRemove(taskId),
+      });
 
       // update the redux state
-      state.columns[colId].taskIds = state.columns[colId].taskIds.filter(item => item !== taskId)
+      state.columns[colId].taskIds = state.columns[colId].taskIds.filter(
+        (item) => item !== taskId
+      );
       delete state.tasks[taskId];
     },
   },

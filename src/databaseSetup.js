@@ -1,10 +1,20 @@
 var admin = require("firebase-admin");
 
-var serviceAccount = require("./service_key.json");
+require('dotenv').config();
+
+// var serviceAccount = require("./service_key.json");
+
+const { privateKey } = JSON.parse(process.env.PRIVATE_KEY)
+
+console.log('private Key => ', privateKey)
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://trello-clone-f76b9.firebaseio.com"
+  credential: admin.credential.cert({
+      projectId: process.env.PROJECT_ID,
+      privateKey: privateKey.replace(/\\n/gm, "\n"),
+      clientEmail: process.env.CLIENT_EMAIL,
+  }),
+  // databaseURL: process.env.DATABASE_URL
 });
 
 var db = admin.firestore();

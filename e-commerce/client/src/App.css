@@ -46,6 +46,64 @@
   color: rgb(112, 76, 182);
 }
 
+/* Product Card section */
+.card {
+  overflow: hidden;
+  box-shadow: 0 2px 20px #e1e5ee;
+  border-radius: 0.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 200ms ease-in;
+}
+
+.card-image {
+  height: 150px;
+  width: 150px !important;
+  margin: 0 auto !important;
+}
+
+.card-button {
+  margin: 0 auto !important;
+}
+
+.card:hover {
+  transform: scale(1.02);
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 16rem));
+  gap: 2rem;
+  justify-content: center;
+}
+/* End Product Card section */
+
+/* Empty Cart section */
+.empty-cart-div {
+  text-align: center;
+}
+
+.empty-cart-media {
+  width: 100px !important;
+  margin: 0 auto;
+}
+
+.empty-cart {
+  padding: 15px;
+  margin: 10% auto;
+  float: none;
+}
+
+.empty-cart-button {
+  width: 100% !important;
+  text-decoration: none;
+}
+/* End Empty Cart section */
+
+
 @keyframes App-logo-float {
   0% {
     transform: translateY(0);

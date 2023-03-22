@@ -102,7 +102,92 @@
   text-decoration: none;
 }
 /* End Empty Cart section */
+/* Checkout Page section */
+.heading {
+  text-align: center;
+}
 
+.checkout-section {
+  width: 75%;
+  min-height: 90vh;
+  margin: 50px auto 0;
+}
+
+.cart-image {
+  width: 100px;
+  height: auto;
+}
+
+.quantity {
+  display: flex;
+}
+
+.remove-cursor {
+  padding-right: 5px;
+}
+
+.add-cursor {
+  padding-left:5px;
+}
+
+.cursor {
+  cursor: pointer;
+}
+
+.price {
+  font-weight: bold;
+  text-align: right;
+}
+
+.proceed-button {
+  font-weight: bold;
+  float: right;
+}
+/* End Checkout Page section */
+/* Payment Successful section */
+.s-div {
+  text-align: center;
+}
+
+.s-payment {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 25px;
+  margin: 10% auto;
+}
+
+.s-media {
+  width: 100px !important;
+  margin: 0 auto;
+}
+/* End Payment Successful section */
+/* Payment Page section */
+.payment-div {
+  min-height: 65vh;
+}
+
+.payment-card {
+  padding: 15px;
+  margin: 10% auto;
+  margin-bottom: 0%;
+  float: none;
+}
+
+.pay-button {
+  width: 100% !important;
+  text-decoration: none;
+}
+
+.pay-credentials {
+  text-align: center;
+  color: red;
+}
+
+.card-number {
+  font-weight: bold;
+}
+/* End Payment Page section */
 
 @keyframes App-logo-float {
   0% {

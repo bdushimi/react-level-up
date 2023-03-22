@@ -46,7 +46,7 @@ export const storeSlice = createSlice({
 
       state.totalCount = state.totalCount + 1;
       state.totalPrice = state.totalPrice + action.payload.price;
-      state.totalPrice = Math.round(state.totalPrice) / 100;
+      state.totalPrice = Math.round(state.totalPrice * 100) / 100;
     },
 
     addItem: (state, action) => {

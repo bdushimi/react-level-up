@@ -1,11 +1,15 @@
 import Link from 'next/link';
 import { FaShoppingCart } from 'react-icons/fa';
+import { useSnipcart } from 'use-snipcart';
 
 import Container from '@components/Container';
 
 import styles from './Header.module.scss';
 
 const Header = () => {
+
+  const {cart = {} } = useSnipcart();
+  console.log('cart', cart)
   return (
     <header className={styles.header}>
       <Container className={styles.headerContainer}>
@@ -32,10 +36,10 @@ const Header = () => {
           </li>
         </ul>
         <p className={styles.headerCart}>
-          <button>
+          <button className='snipcart-checkout'>
             <FaShoppingCart />
             <span>
-              $0.00
+              ${cart.subtotal?.toFixed(2)}
             </span>
           </button>
         </p>

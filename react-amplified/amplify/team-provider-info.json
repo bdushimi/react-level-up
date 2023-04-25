@@ -17,6 +17,12 @@
       },
       "auth": {
         "reactamplifiedf99eeab4": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d2blhmt4s31ck1",
+          "type": "manual"
+        }
       }
     }
   }

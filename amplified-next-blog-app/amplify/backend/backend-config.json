@@ -1,13 +1,30 @@
 {
   "api": {
     "amplifiednextblogapp": {
-      "dependsOn": [],
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "amplifiednextblogappb45fd7bd"
+        }
+      ],
       "output": {
         "authConfig": {
-          "additionalAuthenticationProviders": [],
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+              "userPoolConfig": {
+                "userPoolId": "authamplifiednextblogappb45fd7bd"
+              }
+            }
+          ],
           "defaultAuthentication": {
             "apiKeyConfig": {
-              "apiKeyExpirationDays": 7
+              "apiKeyExpirationDate": "2024-04-30T18:19:37.600Z",
+              "apiKeyExpirationDays": 365,
+              "description": "public api key"
             },
             "authenticationType": "API_KEY"
           }

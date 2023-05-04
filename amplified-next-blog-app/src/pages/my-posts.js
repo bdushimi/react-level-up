@@ -53,9 +53,11 @@ export default function MyPosts() {
                 View Post
               </button>
             </Link>
-            <button className="text-sm mr-4 px-4 py-2 border-2 rounded-full text-blue-500 border-slate-400 hover:border-slate-500">
-              Edit Post
-            </button>
+            <Link href={`/edit-post/${post.id}`}>
+              <button className="text-sm mr-4 px-4 py-2 border-2 rounded-full text-blue-500 border-slate-400 hover:border-slate-500">
+                Edit Post
+              </button>
+            </Link>
             <button
               className="text-sm mr-4 text-red-500 hover:text-lg"
               onClick={() => deletePostHandler(post.id)}

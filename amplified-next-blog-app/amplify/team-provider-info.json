@@ -17,6 +17,9 @@
       },
       "auth": {
         "amplifiednextblogappb45fd7bd": {}
+      },
+      "storage": {
+        "postImages": {}
       }
     }
   }

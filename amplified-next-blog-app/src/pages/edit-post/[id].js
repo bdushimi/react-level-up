@@ -66,12 +66,11 @@ export default function EditPost() {
     };
 
     if (isPostCoverImageUpdated && image) {
-      //Upload the image to the AWS s3 and returns the udpated URL
+      //Upload the image to the AWS s3
       if (image) {
         const filename = `${image.name}_${uuid_v4()}`;
         await Storage.put(filename, image);
-        const imageKey = await Storage.get(filename);
-        postUpdated.coverImage = imageKey;
+        postUpdated.coverImage = filename;
       }
     }
 

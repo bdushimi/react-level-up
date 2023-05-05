@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { API, Auth, Hub } from "aws-amplify";
+import { useState, useEffect } from "react";
+import { API, Auth, Hub, Storage } from "aws-amplify";
 import { useRouter } from "next/router";
 import { v4 as uuid_v4 } from "uuid";
 import "../../../AmplifyConfig";
@@ -35,14 +35,13 @@ const Post = ({ post }) => {
       await API.graphql({
         query: createCommentMutation,
         variables: { input: comment },
-        authMode: "AMAZON_COGNITO_USER_POOLS"
+        authMode: "AMAZON_COGNITO_USER_POOLS",
       });
     } catch (error) {
       console.log(error);
     }
 
-    router.push("/my-posts")
-
+    router.push("/my-posts");
   }
 
   function toggle() {
@@ -57,6 +56,21 @@ const Post = ({ post }) => {
       <div className="mt-8">
         <ReactMarkdown className="prose" children={post.content} />
       </div>
+      <div className="tracking-wide text-gray-500 my-4">
+        {post?.comments.items.length > 0 &&
+          post.comments.items.map((comment, index) => (
+            <div
+              key={index}
+              className="py-8 px-8 max-w-xl mx-auto bg-white shadow-lg space-y-2 sm:py-1 sm:flex my-6 mx-12
+            sm:items-center sm:space-y-0 sm:space-x-6 mb-2"
+            >
+              <div>
+                <p className="text-gray-500 mt-2">{comment.message}</p>
+                <p className="text-gray-200 mt-1">{comment.createdBy}</p>
+              </div>
+            </div>
+          ))}
+      </div>
       <div>
         <button
           type="button"
@@ -69,7 +83,9 @@ const Post = ({ post }) => {
           <div style={{ display: showMe ? "block" : "none" }}>
             <SimpleMDE
               value={comment.message}
-              onChange={(value) => setComment({ ...comment, message: value, postID: post.id })}
+              onChange={(value) =>
+                setComment({ ...comment, message: value, postID: post.id })
+              }
             />
             <button
               type="button"
@@ -107,9 +123,14 @@ export async function getStaticProps({ params }) {
     variables: { id },
   });
 
+  const post = postData.data.getPost;
+  // Get the updated URL
+  const coverImageURL = await Storage.get(post.coverImage);
+  post.coverImage = coverImageURL;
+
   return {
     props: {
-      post: postData.data.getPost,
+      post,
     },
     revalidate: 1,
   };

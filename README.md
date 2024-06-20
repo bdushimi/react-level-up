@@ -4,7 +4,7 @@ Welcome to the ReactJS Projects Collection! This repository contains a collectio
 
 ## Table of Contents
 
-- [Project 1: Todo App](#trello-clone)
+- [Project 1: Todo App](#project-1-todo-app)
 
 ## Projects
 
@@ -12,7 +12,7 @@ Welcome to the ReactJS Projects Collection! This repository contains a collectio
 
 **Description**: This project is a simple and interactive Todo App that allows users to add, delete, and mark tasks as completed. It demonstrates the use of state management and component lifecycle methods in React.
 
-- **Project Folder**: [Todo App](./TodoApp)
+- **Project Folder**: [Todo App](https://github.com/bdushimi/react-level-up/tree/trello-clone)
 - **Live Demo**: [Todo App Live](https://example.com/todoapp)
 - **Tech Stack**: React, CSS Modules
 - **Important Libraries/Tools**: Axios for HTTP requests, UUID for unique identifiers

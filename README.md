@@ -5,7 +5,7 @@ Welcome to the ReactJS Projects Collection! This repository contains a collectio
 ## Table of Contents
 
 - [Project 1: Todo App](#project-1-todo-app)
-- - [Project 2: Weather Dashboard](#project-2-weather-dashboard)
+- [Project 2: Weather Dashboard](#project-2-weather-dashboard)
 
 ## Projects
 

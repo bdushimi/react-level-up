@@ -26,3 +26,7 @@ dist-ssr
 
 # Firebase secrets
 service_key.json
+
+
+# Env file
+.env 

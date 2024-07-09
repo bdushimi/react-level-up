@@ -1,17 +1,20 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+const API_KEY = import.meta.env.VITE_API_KEY;
 
 // ADD FIREBASE CONFIGURATION HERE
-// const firebaseConfig = "<your_firebase_config>";
 const firebaseConfig = {
-  apiKey: "AIzaSyBoy2EsR0n15LqR4L0OBZZs_g9Aw7rkOKI",
-  authDomain: "trello-clone-f0e97.firebaseapp.com",
-  projectId: "trello-clone-f0e97",
-  storageBucket: "trello-clone-f0e97.appspot.com",
-  messagingSenderId: "842001788566",
-  appId: "1:842001788566:web:bfbfa35d95d6ac694e9cb7",
-  measurementId: "G-0X0SJ8CL2L",
+  apiKey: API_KEY,
+  authDomain: "trello-clone-97722.firebaseapp.com",
+  projectId: "trello-clone-97722",
+  storageBucket: "trello-clone-97722.appspot.com",
+  messagingSenderId: "186038753184",
+  appId: "1:186038753184:web:7a1dd95227ff8b3df136c5",
+  measurementId: "G-QH8XDG0L52"
 };
+
+
+
 
 
 const app = initializeApp(firebaseConfig);

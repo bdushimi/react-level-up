@@ -1,4 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { db } from '../firebase'
+import { doc, setDoc, updateDoc, deleteDoc, arrayUnion, arrayRemove } from 'firebase/firestore'
 
 const initialState = {
   tasks: {},
@@ -33,21 +35,36 @@ export const taskSlice = createSlice({
     // receives the tasks data as payload. 
     // The reducer will set the tasks object in the initialState to the data received as the payload.
     setAllTasks: (state, action) => {
-      state.tasks = action.payload.tasks
+      let finalTasks = {}
+      action.payload.map(task => (
+        finalTasks[task["id"]] = task
+      ))
+
+      state.tasks = finalTasks
     },
 
     // receives the columns data as payload. 
     // The reducer will set the columns object in the initialState to the data received as the payload.
     setAllColumns: (state, action) => {
-      state.columns = action.payload.columns
+      let finalColumns = {}
+      action.payload.map(column => (
+        finalColumns[column["id"]] = column
+      ))
+
+      state.columns = finalColumns
     },
 
     // receives the column order list as payload. 
     // The reducer will set the columnOrder list in the initialState to the list received as the payload.
     setColumnOrder: (state, action) => {
-      state.columnOrder = action.payload.columnOrder
+      state.columnOrder = action.payload['columnOrder']
     },
     dragColumns: (state, action) => {
+      const columnOrderDocRef = doc(db, 'columnOrder', 'col-order')
+      updateDoc(columnOrderDocRef, {
+        columnOrder: action.payload
+      })
+
       state.columnOrder = action.payload;
     },
     dragTasksDifferentColumn: (state, action) => {
@@ -59,6 +76,11 @@ export const taskSlice = createSlice({
     dragTasksSameColumn: (state, action) => {
       const colId = action.payload.id
       const taskIds = action.payload.taskIds
+
+      const colDocRef = doc(db, 'columns', colId)
+      updateDoc(colDocRef, {
+        taskIds: taskIds
+      })
 
       state.columns[colId].taskIds = taskIds
     },
@@ -79,6 +101,23 @@ export const taskSlice = createSlice({
       let nextId = parseInt(lastId.split("-")[1]) + 1
       let newTaskId = "task-" + nextId.toString()
 
+      try {
+        // Add a new task to the "tasks" collection 
+        setDoc(doc(db, 'tasks', newTaskId), {
+          id: newTaskId,
+          taskTitle: "New Task",
+          taskDescription: ""
+        })
+
+        const colDocRef = doc(db, 'columns', colId)
+        // Update the "columns" collection 
+        updateDoc(colDocRef, {
+          taskIds: arrayUnion(newTaskId)
+        })
+      } catch (err) {
+        alert(err)
+      }
+
       // Add the new task in the tasks object of the initial state
       state.tasks[newTaskId] = {
         id: newTaskId,
@@ -86,7 +125,7 @@ export const taskSlice = createSlice({
         taskDescription: ""
       }
 
-      // Append the new task id to the taskIds list of the particulat column
+      // Append the new task id to the taskIds list of the particular column
       state.columns[colId].taskIds.push(newTaskId)
     },
     // Add new reducers here
@@ -101,13 +140,29 @@ export const taskSlice = createSlice({
 
       // update the data base only if the task title or task description changes
       if (state.tasks[id].taskTitle !== taskTitle || state.tasks[id].taskDescription !== taskDescription) {
-        state.tasks[id] = updatedTask
+        const taskDocRef = doc(db, 'tasks', id)
+        updateDoc(taskDocRef, {
+          taskTitle: taskTitle,
+          taskDescription: taskDescription
+        })
       }
+      state.tasks[id] = updatedTask
     },
     // Add new reducers here
     deleteTask: (state, action) => {
       const taskId = action.payload.taskId;
       const colId = state.currColIdToEdit;
+
+      // update the database
+      // -- delete the task from the "tasks" collection of the database
+      const taskDocRef = doc(db, 'tasks', taskId)
+      deleteDoc(taskDocRef)
+
+      // -- update the taskIds array in the "columns" collection of the database
+      const colDocRef = doc(db, 'columns', colId)
+      updateDoc(colDocRef, {
+        taskIds: arrayRemove(taskId)
+      })
 
       // update the redux state
       state.columns[colId].taskIds = state.columns[colId].taskIds.filter(item => item !== taskId)

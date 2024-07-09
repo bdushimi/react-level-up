@@ -3,6 +3,8 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import Column from './Column'
 import EditTaskDialog from './EditTaskDialog'
 import dataset from './dataset'
+import { db } from '../firebase'
+import { collection, query, onSnapshot } from "firebase/firestore"
 
 
 
@@ -74,9 +76,35 @@ const Board = () => {
     }
 
     useEffect(() => {
-        dispatch(setAllTasks({ tasks: dataset["tasks"] })) // Initialize the tasks object in redux initial state
-        dispatch(setAllColumns({ columns: dataset["columns"] })) // Initialize the columns object in redux initial state
-        dispatch(setColumnOrder({ columnOrder: dataset["columnOrder"] })) // Initialize the columns order in redux initial state
+        // Query Tasks from the databse
+        const queryTasks = query(collection(db, 'tasks'))
+        let tasks = [];
+        onSnapshot(queryTasks, (querySnapshot) => {
+            querySnapshot.docs.map(doc => (
+                tasks.push(doc.data())
+            ))
+            dispatch(setAllTasks(tasks))
+        })
+
+        // Query Columns from the databse
+        const queryColumns = query(collection(db, 'columns'))
+        let columns = [];
+        onSnapshot(queryColumns, (querySnapshot) => {
+            querySnapshot.docs.map(doc => (
+                columns.push(doc.data())
+            ))
+            dispatch(setAllColumns(columns))
+        })
+
+        // Query COlumn Order from the databse
+        const queryColumnOrder = query(collection(db, 'columnOrder'))
+        let columnOrder = [];
+        onSnapshot(queryColumnOrder, (querySnapshot) => {
+            querySnapshot.docs.map(doc => (
+                columnOrder = doc.data()
+            ))
+            dispatch(setColumnOrder(columnOrder))
+        })
     }, [dispatch])
 
 

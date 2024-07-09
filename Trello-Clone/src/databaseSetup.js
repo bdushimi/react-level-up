@@ -1,10 +1,9 @@
-var admin = require("firebase-admin");
-
-var serviceAccount = require("./service_key.json");
+import admin from "firebase-admin"
+import serviceAccount from "./service_key.json"
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://<YOUR_DATABASE_NAME>.firebaseio.com",
+  databaseURL: "https://trello-clone-f0e97.firebaseio.com",
 });
 
 var db = admin.firestore();

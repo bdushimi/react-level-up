@@ -1,4 +1,3 @@
-import React from 'react'
 import { useDispatch } from 'react-redux';
 
 // Import Material UI icon
@@ -6,8 +5,9 @@ import AddIcon from '@mui/icons-material/Add';
 
 // Import reducer
 import { addNewTask } from './taskSlice';
+import { TaskAddButtonI } from '../interfaces/Interfaces';
 
-const TaskAddButton = ({ colId }) => {
+const TaskAddButton = ({ colId }: TaskAddButtonI) => {
     const dispatch = useDispatch();
 
     function handleNewTask() {

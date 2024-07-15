@@ -17,9 +17,12 @@ export interface DatasetI {
 }
 
 export interface StateI {
-  tasks?: { [key: string]: TaskI };
-  columns?: { [key: string]: ColumnI };
+  tasks: { [key: string]: TaskI };
+  columns: { [key: string]: ColumnI };
   columnOrder?: string[];
+  isDialogOpen: boolean;
+  currTaskIdToEdit: string;
+  currColIdToEdit: string;
 }
 
 export interface DragResult {
@@ -50,4 +53,18 @@ export interface TaskCardPropsI {
     taskDescription: string;
   };
   index: number;
+}
+
+export interface ColumnPropsI {
+  colId: string;
+  index: number;
+}
+
+export interface TaskAddButtonI {
+  colId: string;
+}
+
+export interface EditTaskDialogI {
+  taskId: string;
+  open: boolean;
 }

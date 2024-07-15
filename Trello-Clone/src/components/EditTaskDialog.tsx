@@ -1,30 +1,32 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 // Import Material UI items
 import { Box } from '@mui/system';
-import { Dialog, Slide, TextField, Tooltip } from '@mui/material';
+import { Dialog, Slide, TextField, Tooltip, SlideProps } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 // Import reducers
 import { updateTask, deleteTask, setDialogStatus } from './taskSlice';
+import { EditTaskDialogI, RootStateI } from '../interfaces/Interfaces';
 
-const Transition = React.forwardRef(function Transition(props, ref) {
+const Transition = React.forwardRef<unknown, SlideProps>(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const EditTaskDialog = ({ taskId, open }) => {
-    const data = useSelector((state) => state.task);
+const EditTaskDialog = ({ taskId, open }: EditTaskDialogI) => {
+    const useTypedSelector: TypedUseSelectorHook<RootStateI> = useSelector;
+    const data = useTypedSelector((state) => state.task);
     const dispatch = useDispatch();
 
-    const [title, setTitle] = useState(data.tasks[taskId].taskTitle);
-    const [desc, setDesc] = useState(data.tasks[taskId].taskDescription);
+    const [title, setTitle] = useState(data.tasks?.[taskId]?.taskTitle || '');
+    const [desc, setDesc] = useState(data.tasks?.[taskId]?.taskDescription || '');
 
-    function handleTitleChange(e) {
+    function handleTitleChange(e: React.ChangeEvent<HTMLInputElement>) {
         setTitle(e.target.value)
     }
 
-    function handleDescriptionChange(e) {
+    function handleDescriptionChange(e: React.ChangeEvent<HTMLInputElement>) {
         setDesc(e.target.value)
     }
 
@@ -62,8 +64,9 @@ const EditTaskDialog = ({ taskId, open }) => {
                             label={taskId}
                             variant="outlined"
                             value={title}
-                            onChange={(e) => { handleTitleChange(e) }}
-                            style={{ resize: "none", marginLeft: 10, size: "small" }}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => { handleTitleChange(e) }}
+                            style={{ resize: "none", marginLeft: 10 }}
+                            size='small'
                         />
                     </div>
 
@@ -82,7 +85,7 @@ const EditTaskDialog = ({ taskId, open }) => {
                             rows="5"
                             value={desc}
                             variant="outlined"
-                            onChange={(e) => handleDescriptionChange(e)}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleDescriptionChange(e)}
                             style={{
                                 resize: "none",
                                 width: "100%",

@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { db } from '../firebase'
-import { doc, setDoc, updateDoc, deleteDoc, arrayUnion, arrayRemove } from 'firebase/firestore'
-import { ColumnI, TaskI } from '../interfaces/Interfaces';
+import { arrayRemove, arrayUnion, deleteDoc, doc, setDoc, updateDoc } from 'firebase/firestore';
+import { db } from '../firebase';
+import { ColumnI, StateI, TaskI } from '../interfaces/Interfaces';
 
-const initialState = {
+const initialState: StateI = {
   tasks: {},
   columns: {},
   columnOrder: [],
@@ -31,8 +31,8 @@ export const taskSlice = createSlice({
     },
     // The reducer will set the tasks object in the initialState to the data received as the payload.
     setAllTasks: (state, action) => {
-      const finalTasks: { [key: string]: Task } = {}
-      action.payload.map((task: Task) => (
+      const finalTasks: { [key: string]: TaskI } = {}
+      action.payload.map((task: TaskI) => (
         finalTasks[task["id"]] = task
       ))
 
@@ -42,8 +42,8 @@ export const taskSlice = createSlice({
     // Receives the columns data as payload. 
     // The reducer will set the columns object in the initialState to the data received as the payload.
     setAllColumns: (state, action) => {
-      const finalColumns: { [key: string]: Column } = {}
-      action.payload.map((column: Column) => (
+      const finalColumns: { [key: string]: ColumnI } = {}
+      action.payload.map((column: ColumnI) => (
         finalColumns[column["id"]] = column
       ))
 
@@ -62,8 +62,8 @@ export const taskSlice = createSlice({
 
       state.columnOrder = action.payload;
     },
-    dragTasksDifferentColumn: (state, action) => {
-      let { srcColId, srcTaskIds, dstColId, dstTaskIds } = action.payload;
+    dragTasksDifferentColumn: (state: StateI, action) => {
+      const { srcColId, srcTaskIds, dstColId, dstTaskIds } = action.payload;
 
       const srcColDocRef = doc(db, 'columns', srcColId)
       updateDoc(srcColDocRef, {
@@ -78,7 +78,7 @@ export const taskSlice = createSlice({
       state.columns[srcColId].taskIds = srcTaskIds
       state.columns[dstColId].taskIds = dstTaskIds
     },
-    dragTasksSameColumn: (state, action) => {
+    dragTasksSameColumn: (state: StateI, action) => {
       const colId = action.payload.id
       const taskIds = action.payload.taskIds
 
@@ -89,12 +89,16 @@ export const taskSlice = createSlice({
 
       state.columns[colId].taskIds = taskIds
     },
-    addNewTask: (state, action) => {
-      let colId = action.payload.colId
+    addNewTask: (state: StateI, action) => {
+      const colId = action.payload.colId
 
       // get the keys of the tasks object
-      let keys = Object.keys(state.tasks).sort()
-      keys.sort((a, b) => a.replace(/[^\d]+/g, '') - b.replace(/[^\d]+/g, ''));
+      const keys = state.tasks ? Object.keys(state.tasks).sort() : [];
+      keys.sort((a, b) => {
+        const numA = parseInt(a.replace(/[^\d]+/g, ''), 10);
+        const numB = parseInt(b.replace(/[^\d]+/g, ''), 10);
+        return numA - numB;
+      });
 
       // Get the id of the task present at the end of the tasks object 
       let lastId = "task-0"
@@ -103,8 +107,8 @@ export const taskSlice = createSlice({
       }
 
       // set the integer id of the next task
-      let nextId = parseInt(lastId.split("-")[1]) + 1
-      let newTaskId = "task-" + nextId.toString()
+      const nextId = parseInt(lastId.split("-")[1]) + 1
+      const newTaskId = "task-" + nextId.toString()
 
       try {
         // Add a new task to the "tasks" collection 
@@ -133,7 +137,7 @@ export const taskSlice = createSlice({
       // Append the new task id to the taskIds list of the particular column
       state.columns[colId].taskIds.push(newTaskId)
     },
-    updateTask: (state, action) => {
+    updateTask: (state: StateI, action) => {
       const { id, taskTitle, taskDescription } = action.payload
 
       const updatedTask = {
@@ -152,7 +156,7 @@ export const taskSlice = createSlice({
       }
       state.tasks[id] = updatedTask
     },
-    deleteTask: (state, action) => {
+    deleteTask: (state: StateI, action) => {
       const taskId = action.payload.taskId;
       const colId = state.currColIdToEdit;
 
@@ -168,8 +172,8 @@ export const taskSlice = createSlice({
       })
 
       // update the redux state
-      state.columns[colId].taskIds = state.columns[colId].taskIds.filter(item => item !== taskId)
-      delete state.tasks[taskId];
+      state.columns[colId].taskIds = state.columns?.[colId].taskIds.filter(item => item !== taskId)
+      delete state.tasks?.[taskId];
     },
   },
 });

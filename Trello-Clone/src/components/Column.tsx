@@ -1,19 +1,20 @@
 import { Draggable, Droppable } from 'react-beautiful-dnd';
-import { useSelector } from 'react-redux';
+import { TypedUseSelectorHook, useSelector } from 'react-redux';
 import TaskAddButton from './TaskAddButton';
 import TaskCard from './TaskCard';
+import { ColumnPropsI, RootStateI, TaskI } from '../interfaces/Interfaces';
 
 
-const Column = ({ colId, index }) => {
-    const data = useSelector((state) => state.task);
+const Column = ({ colId, index }: ColumnPropsI) => {
+    const useTypedSelector: TypedUseSelectorHook<RootStateI> = useSelector;
+    const data = useTypedSelector((state) => state.task);
 
     function RenderColumnTasks() {
-        const currColTasks = data.columns[colId].taskIds.map(taskId => data.tasks[taskId]);
-
+        const currColTasks = data.columns?.[colId].taskIds.map((taskId: string) => data.tasks?.[taskId]).filter((task): task is TaskI => task !== undefined);
         return (
             <>
                 {
-                    currColTasks.map((task, index) => {
+                    currColTasks?.map((task: TaskI, index: number) => {
                         // Replace this with the TaskCard component later
                         return <TaskCard key={task.id} currTaskColId={colId} task={task} index={index} />
                     })
@@ -28,7 +29,7 @@ const Column = ({ colId, index }) => {
                 {(provided) => (
                     <div ref={provided.innerRef} {...provided.draggableProps} className="column-container">
                         <div className='task-title-edit-container'>
-                            <span {...provided.dragHandleProps} className="column-title">{data.columns[colId].title}</span>
+                            <span {...provided.dragHandleProps} className="column-title">{data.columns?.[colId].title}</span>
                         </div>
                         <Droppable droppableId={colId} type='task'>
                             {(provided) => (

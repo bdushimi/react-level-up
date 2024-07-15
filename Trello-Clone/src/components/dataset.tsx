@@ -1,4 +1,6 @@
-const dataset = {
+import { Dataset } from "../interfaces/Interfaces";
+
+const dataset: Dataset = {
     tasks: {
         "task-1": { id: "task-1", taskTitle: "Content for task-1", taskDescription: "" },
         "task-2": { id: "task-2", taskTitle: "Content for task-2", taskDescription: "This is description of task 2." },
@@ -12,6 +14,7 @@ const dataset = {
         "column-4": { id: "column-4", title: "Completed", taskIds: ["task-4"] }
     },
     columnOrder: ["column-1", "column-2", "column-3", "column-4"]
-}
+};
+
 
 export default dataset

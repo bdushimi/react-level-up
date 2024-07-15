@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { db } from '../firebase'
 import { doc, setDoc, updateDoc, deleteDoc, arrayUnion, arrayRemove } from 'firebase/firestore'
+import { ColumnI, TaskI } from '../interfaces/Interfaces';
 
 const initialState = {
   tasks: {},
@@ -28,32 +29,26 @@ export const taskSlice = createSlice({
     setDialogStatus: (state, action) => {
       state.isDialogOpen = action.payload
     },
-    /* Default reducers end */
-
-    // Add new reducers here
-
-    // receives the tasks data as payload. 
     // The reducer will set the tasks object in the initialState to the data received as the payload.
     setAllTasks: (state, action) => {
-      let finalTasks = {}
-      action.payload.map(task => (
+      const finalTasks: { [key: string]: Task } = {}
+      action.payload.map((task: Task) => (
         finalTasks[task["id"]] = task
       ))
 
       state.tasks = finalTasks
     },
 
-    // receives the columns data as payload. 
+    // Receives the columns data as payload. 
     // The reducer will set the columns object in the initialState to the data received as the payload.
     setAllColumns: (state, action) => {
-      let finalColumns = {}
-      action.payload.map(column => (
+      const finalColumns: { [key: string]: Column } = {}
+      action.payload.map((column: Column) => (
         finalColumns[column["id"]] = column
       ))
 
       state.columns = finalColumns
     },
-
     // receives the column order list as payload. 
     // The reducer will set the columnOrder list in the initialState to the list received as the payload.
     setColumnOrder: (state, action) => {
@@ -68,7 +63,7 @@ export const taskSlice = createSlice({
       state.columnOrder = action.payload;
     },
     dragTasksDifferentColumn: (state, action) => {
-      let { srcColId, srcTaskIds, dstColId, dstTaskIds } = action.payload;
+      const { srcColId, srcTaskIds, dstColId, dstTaskIds } = action.payload;
 
       state.columns[srcColId].taskIds = srcTaskIds
       state.columns[dstColId].taskIds = dstTaskIds
@@ -128,7 +123,6 @@ export const taskSlice = createSlice({
       // Append the new task id to the taskIds list of the particular column
       state.columns[colId].taskIds.push(newTaskId)
     },
-    // Add new reducers here
     updateTask: (state, action) => {
       const { id, taskTitle, taskDescription } = action.payload
 
@@ -148,7 +142,6 @@ export const taskSlice = createSlice({
       }
       state.tasks[id] = updatedTask
     },
-    // Add new reducers here
     deleteTask: (state, action) => {
       const taskId = action.payload.taskId;
       const colId = state.currColIdToEdit;

@@ -1,15 +1,14 @@
-import React from 'react'
 import { useDispatch } from 'react-redux';
 
-import { Draggable } from 'react-beautiful-dnd'
+import { Draggable } from 'react-beautiful-dnd';
 
 // Import Material UI items
-import { Card, CardContent, Tooltip } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit';
 import SubjectIcon from '@mui/icons-material/Subject';
+import { Card, CardContent, Tooltip } from '@mui/material';
 
 // Import reducers
-import { setCurrTaskIdToEdit, setCurrColIdToEdit, setDialogStatus } from './taskSlice';
+import { setCurrColIdToEdit, setCurrTaskIdToEdit, setDialogStatus } from './taskSlice';
 
 const TaskCard = ({ currTaskColId, task, index }) => {
     const dispatch = useDispatch();

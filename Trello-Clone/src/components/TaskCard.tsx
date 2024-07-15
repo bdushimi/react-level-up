@@ -9,8 +9,9 @@ import { Card, CardContent, Tooltip } from '@mui/material';
 
 // Import reducers
 import { setCurrColIdToEdit, setCurrTaskIdToEdit, setDialogStatus } from './taskSlice';
+import { TaskCardPropsI } from '../interfaces/Interfaces';
 
-const TaskCard = ({ currTaskColId, task, index }) => {
+const TaskCard = ({ currTaskColId, task, index }: TaskCardPropsI) => {
     const dispatch = useDispatch();
 
     function handleEditButtonClick() {
@@ -23,7 +24,7 @@ const TaskCard = ({ currTaskColId, task, index }) => {
         <Draggable draggableId={task.id} index={index}>
             {(provided) => (
                 <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
-                    <Card key={index} cursor="pointer" variant="outlined" style={{ marginBottom: "10px" }}>
+                    <Card key={index} variant="outlined" component="div" style={{ marginBottom: "10px" }}>
                         <CardContent>
                             <div className='task-title-edit-container'>
                                 <span style={{ fontSize: "16px", fontWeight: "700" }}>{task.taskTitle}</span>

@@ -1,8 +1,7 @@
-import React from 'react'
+import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
-import { Droppable, Draggable } from 'react-beautiful-dnd'
-import TaskCard from './TaskCard'
-import TaskAddButton from './TaskAddButton'
+import TaskAddButton from './TaskAddButton';
+import TaskCard from './TaskCard';
 
 
 const Column = ({ colId, index }) => {

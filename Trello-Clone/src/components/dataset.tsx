@@ -1,6 +1,6 @@
-import { Dataset } from "../interfaces/Interfaces";
+import { DatasetI } from "../interfaces/Interfaces";
 
-const dataset: Dataset = {
+const dataset: DatasetI = {
     tasks: {
         "task-1": { id: "task-1", taskTitle: "Content for task-1", taskDescription: "" },
         "task-2": { id: "task-2", taskTitle: "Content for task-2", taskDescription: "This is description of task 2." },

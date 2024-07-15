@@ -41,3 +41,13 @@ export interface DragResult {
 export interface RootStateI {
   task: StateI;
 }
+
+export interface TaskCardPropsI {
+  currTaskColId: string;
+  task: {
+    id: string;
+    taskTitle: string;
+    taskDescription: string;
+  };
+  index: number;
+}

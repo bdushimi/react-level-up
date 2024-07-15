@@ -63,7 +63,17 @@ export const taskSlice = createSlice({
       state.columnOrder = action.payload;
     },
     dragTasksDifferentColumn: (state, action) => {
-      const { srcColId, srcTaskIds, dstColId, dstTaskIds } = action.payload;
+      let { srcColId, srcTaskIds, dstColId, dstTaskIds } = action.payload;
+
+      const srcColDocRef = doc(db, 'columns', srcColId)
+      updateDoc(srcColDocRef, {
+        taskIds: srcTaskIds
+      })
+
+      const dstColDocRef = doc(db, 'columns', dstColId)
+      updateDoc(dstColDocRef, {
+        taskIds: dstTaskIds
+      })
 
       state.columns[srcColId].taskIds = srcTaskIds
       state.columns[dstColId].taskIds = dstTaskIds

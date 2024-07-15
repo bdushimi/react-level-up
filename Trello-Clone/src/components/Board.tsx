@@ -1,4 +1,4 @@
-import { collection, onSnapshot, query, QuerySnapshot, DocumentData } from "firebase/firestore"
+import { collection, onSnapshot, query } from "firebase/firestore"
 import { useEffect } from 'react'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import { db } from '../firebase'
@@ -7,18 +7,16 @@ import EditTaskDialog from './EditTaskDialog'
 
 
 
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
-import { dragColumns, dragTasksDifferentColumn, dragTasksSameColumn, setAllColumns, setAllTasks, setColumnOrder } from './taskSlice'
-import { ColumnI, DragResult, TaskI, RootStateI } from "../interfaces/Interfaces"
+import { useDispatch, useSelector } from 'react-redux'
 import Column from "./Column"
+import { dragColumns, dragTasksDifferentColumn, dragTasksSameColumn, setAllColumns, setAllTasks, setColumnOrder } from './taskSlice'
 const Board = () => {
 
     //  Get data from the redux store
-    const useTypedSelector: TypedUseSelectorHook<RootStateI> = useSelector;
-    const data = useTypedSelector((state) => state.task);
+    const data = useSelector((state) => state.task);
     const dispatch = useDispatch();
 
-    function onDragEnd(result: DragResult) {
+    function onDragEnd(result) {
         const { destination, source, draggableId, type } = result;
 
         //If there is no destination present
@@ -79,7 +77,7 @@ const Board = () => {
     useEffect(() => {
         // Query Tasks from the databse
         const queryTasks = query(collection(db, 'tasks'))
-        const tasks: { [key: string]: TaskI }[] = [];
+        const tasks = [];
         onSnapshot(queryTasks, (querySnapshot) => {
             querySnapshot.docs.map(doc => (
                 tasks.push(doc.data())
@@ -89,7 +87,7 @@ const Board = () => {
 
         // Query Columns from the databse
         const queryColumns = query(collection(db, 'columns'))
-        const columns: { [key: string]: ColumnI }[] = [];
+        const columns = [];
         onSnapshot(queryColumns, (querySnapshot) => {
             querySnapshot.docs.map(doc => (
                 columns.push(doc.data())
@@ -99,8 +97,8 @@ const Board = () => {
 
         // Query COlumn Order from the databse
         const queryColumnOrder = query(collection(db, 'columnOrder'))
-        let columnOrder: DocumentData = [];
-        onSnapshot(queryColumnOrder, (querySnapshot: QuerySnapshot<DocumentData>) => {
+        let columnOrder = [];
+        onSnapshot(queryColumnOrder, (querySnapshot) => {
             querySnapshot.docs.map(doc => (
                 columnOrder = doc.data()
             ))

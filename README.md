@@ -4,19 +4,19 @@ Welcome to the ReactJS Projects Collection! This repository contains a collectio
 
 ## Table of Contents
 
-- [Project 1: Todo App](#project-1-todo-app)
+- [Project 1: Simple Trello](#project-1-TaskFlow)
 - [Project 2: Weather Dashboard](#project-2-weather-dashboard)
 
 ## Projects
 
-### Project 1: Todo App
+### Project 1: TaskFlow
 
-**Description**: This project is a simple and interactive Todo App that allows users to add, delete, and mark tasks as completed. It demonstrates the use of state management and component lifecycle methods in React.
+**Description**: This project is a simple and interactive tasks management with drag-and-drop functionality for tasks and columns. It also integrates Firebase into the application to perform CRUD operations on tasks..
 
-- **Project Folder**: [Todo App](https://github.com/bdushimi/react-level-up/tree/trello-clone)
-- **Live Demo**: [Todo App Live](https://example.com/todoapp)
-- **Tech Stack**: React, CSS Modules
-- **Important Libraries/Tools**: Axios for HTTP requests, UUID for unique identifiers
+- **Project Folder**: [TaskFlow](https://github.com/bdushimi/react-level-up/tree/trello-clone)
+- **Live Demo**: [Todo App Live](https://trello-clone-97722.web.app/)
+- **Tech Stack**: React, Redux ToolKit, Typescript, Firebase
+- **Important Libraries/Tools**: react-beautiful-dnd
 
 ---
 

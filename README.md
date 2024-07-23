@@ -14,8 +14,8 @@ Welcome to the ReactJS Projects Collection! This repository contains a collectio
 **Description**: This project is a simple and interactive tasks management with drag-and-drop functionality for tasks and columns. It also integrates Firebase into the application to perform CRUD operations on tasks..
 
 - **Project Folder**: [TaskFlow](https://github.com/bdushimi/react-level-up/tree/trello-clone)
-- **Live Demo**: [Todo App Live](https://trello-clone-97722.web.app/)
-- **Tech Stack**: React, Redux ToolKit, Typescript, Firebase
+- **Live Demo**: [TaskFlow Live](https://trello-clone-97722.web.app/)
+- **Tech Stack**: React, Redux Toolkit, Typescript, Firebase
 - **Important Libraries/Tools**: react-beautiful-dnd
 
 ---

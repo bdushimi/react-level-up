@@ -122,7 +122,7 @@ const Board = () => {
     return (
         <>
             <div style={{ textAlign: "center", color: "black" }}>
-                <h1>Tasks Management Board</h1>
+                <h1>TaskFlow : Tasks Management Board</h1>
             </div>
             <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId='all-columns' direction='horizontal' type='column'>

@@ -4,7 +4,7 @@ Welcome to the ReactJS Projects Collection! This repository contains a collectio
 
 ## Table of Contents
 
-- [Project 1: Simple Trello](#project-1-TaskFlow)
+- [Project 1: TaskFlow](#project-1-TaskFlow)
 - [Project 2: Weather Dashboard](#project-2-weather-dashboard)
 
 ## Projects
